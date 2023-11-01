@@ -2,8 +2,7 @@ package edu.seg2105.edu.server.backend;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
-
-
+import edu.seg2105.edu.server.ui.ServerConsole;
 import ocsf.server.*;
 
 /**
@@ -23,6 +22,8 @@ public class EchoServer extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5555;
+
+  static ServerConsole console; 
   
   //Constructors ****************************************************
   
@@ -48,7 +49,8 @@ public class EchoServer extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-    System.out.println("Message received: " + msg + " from " + client);
+    console.display(msg.toString());
+    
     this.sendToAllClients(msg);
   }
     
@@ -77,7 +79,7 @@ public class EchoServer extends AbstractServer
     System.out.println("Client connected: " + client);
   }
 
-  @Override
+  @Override //TODO:this is never called upon client disconnect
   protected void clientDisconnected(ConnectionToClient client) {
     System.out.println("Client disconnected: " + client);
   }
@@ -109,10 +111,24 @@ public class EchoServer extends AbstractServer
     try 
     {
       sv.listen(); //Start listening for connections
+
+      //start console
+      console = new ServerConsole(sv);
+      console.start();
+
     } 
     catch (Exception ex) 
     {
       System.out.println("ERROR - Could not listen for clients!");
+    }
+  }
+
+  public void quit() {
+    try {
+      close();
+      System.exit(0);
+    } catch (Exception e) {
+      System.out.println("ERROR - Could not close server!");
     }
   }
 }
