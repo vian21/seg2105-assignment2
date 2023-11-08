@@ -47,7 +47,11 @@ public class EchoServer extends AbstractServer {
    * @param client The connection from which the message originated.
    */
   public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+    console.display("Message received: " + msg.toString() + " from " + client.getInfo("loginID"));
+
     if (msg.toString().startsWith("#login")) {
+      String login_id = msg.toString().split(" ")[1];
+
       if (client.getInfo("loginID") != null) {
         try {
           client.sendToClient("You are already logged in.");
@@ -56,13 +60,12 @@ public class EchoServer extends AbstractServer {
         }
       }
 
-      client.setInfo("loginID", msg.toString().split(" ")[1]);
-
+      client.setInfo("loginID", login_id);
+      System.out.println(login_id + " has logged on.");
       return;
     }
-    console.display(msg.toString());
 
-    this.sendToAllClients(client.getInfo("loginID").toString() + ": " + msg);
+    this.sendToAllClients(client.getInfo("loginID").toString() + "> " + msg);
   }
 
   /**
@@ -83,7 +86,7 @@ public class EchoServer extends AbstractServer {
 
   @Override
   protected void clientConnected(ConnectionToClient client) {
-    System.out.println("Client connected: " + client);
+    System.out.println("A new client has connected to the server.");
   }
 
   @Override

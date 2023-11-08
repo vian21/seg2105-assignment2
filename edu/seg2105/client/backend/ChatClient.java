@@ -46,6 +46,7 @@ public class ChatClient extends AbstractClient {
 
     // authenticate
     sendToServer("#login " + loginID);
+    System.out.println(loginID + " has logged on.");
   }
 
   // Instance methods ************************************************
@@ -154,8 +155,7 @@ public class ChatClient extends AbstractClient {
 
   @Override
   protected void connectionClosed() {
-    clientUI.display("Server has shutdown");
-
+    clientUI.display("Connection closed");
   }
 
   @Override

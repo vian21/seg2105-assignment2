@@ -88,7 +88,7 @@ public class ClientConsole implements ChatIF {
    * @param message The string to be displayed.
    */
   public void display(String message) {
-    System.out.println("> " + message);
+    System.out.println(message);
   }
 
   // Class methods ***************************************************

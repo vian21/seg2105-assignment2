@@ -15,7 +15,7 @@ public class ServerConsole implements ChatIF {
     }
 
     public void display(String message) {
-        System.out.println("SERVER MSG> " + message);
+        System.out.println(message);
     }
 
     public void start() {
@@ -30,7 +30,10 @@ public class ServerConsole implements ChatIF {
                 continue;
             }
 
-            server.sendToAllClients(message);
+            String msg = "SERVER MESSAGE> " + message;
+
+            this.display(msg);
+            server.sendToAllClients(msg);
         }
     }
 
